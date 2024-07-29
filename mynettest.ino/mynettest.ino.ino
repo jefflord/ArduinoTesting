@@ -23,7 +23,7 @@ void setup()
 
   Serial.begin(9600);
 
-  Serial.println("\r\n\t### STARTING ###\r\n");
+  Serial.println("\r\n\t### STARTING!!! ###\r\n");
 
   pinMode(sensorPin, INPUT_PULLUP); // Enable internal pull-up resistor
   pinMode(ledPin, OUTPUT);
