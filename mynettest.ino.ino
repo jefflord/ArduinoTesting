@@ -1,23 +1,14 @@
 #include <ESP8266WiFi.h>
 #include <ArduinoJson.h>
 #include <ArduinoHttpClient.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
 
 #ifndef STASSID
 #define STASSID "DarkNet"
 #define STAPSK "7pu77ies77"
-#endif
-
 #define github_host "httpbin.org"
 #define github_port 80
-#define ONE_WIRE_BUS D2 // DS18B20 data pin
 
-#define LED_OFF HIGH
-#define LED_ON LOW
-
-OneWire oneWire(ONE_WIRE_BUS);
-DallasTemperature sensors(&oneWire);
+#endif
 
 const int sensorPin = D1;       // MC-38 sensor pin
 const int ledPin = LED_BUILTIN; // Built-in LED pin
@@ -25,8 +16,6 @@ const int ledPin = LED_BUILTIN; // Built-in LED pin
 const char *ssid = STASSID;
 const char *password = STAPSK;
 int loopCounter = 0;
-
-bool doTemp = true;
 // X509List cert(cert_DigiCert_Global_Root_CA);
 
 void setup()
@@ -34,13 +23,10 @@ void setup()
 
   Serial.begin(9600);
 
-  Serial.println("\r\n\t### STARTING!!! ###\r\n");
+  Serial.println("\r\n\t### STARTING ###\r\n");
 
   pinMode(sensorPin, INPUT_PULLUP); // Enable internal pull-up resistor
   pinMode(ledPin, OUTPUT);
-
-  sensors.begin();
-  return;
 
   Serial.print("Connecting to ");
   Serial.println(ssid);
@@ -200,52 +186,8 @@ void testJson()
   Serial.println("testJson Done");
 }
 
-int counter = 0;
 void loop()
 {
-
-  if (doTemp)
-  {
-    // if ((counter++ % 2) == 0)
-    // {
-    //   digitalWrite(ledPin, LED_OFF);
-    //   Serial.print("LED_OFF -> ");
-    // }
-    // else
-    // {
-    //   digitalWrite(ledPin, LED_ON);
-    //   Serial.print("LED_ON -> ");
-    // }
-
-    sensors.requestTemperatures();
-    float temperature = sensors.getTempCByIndex(0);
-    float temperatureF = sensors.getTempFByIndex(0);
-
-    Serial.print(temperatureF);
-    Serial.print("F ");
-    Serial.print(temperature);
-    Serial.println("C ");
-
-
-    if (temperatureF < 50.0 || temperatureF > 100.0)
-    {
-      digitalWrite(ledPin, LED_ON);
-      Serial.print("LED_ON -> ");      
-    }
-    else
-    {
-      digitalWrite(ledPin, LED_OFF);
-      Serial.print("LED_OFF -> ");
-    }
-
-
-    delay(1000); // Read temperature every 1s
-
-
-
-    return;
-  }
-
   if (false)
   {
     int sensorState = digitalRead(sensorPin);
@@ -261,35 +203,9 @@ void loop()
     delay(100); // wait for 0.1 seconds before checking again
   }
 
-  if ((counter++ % 2) == 0)
-  {
-    Serial.println("!!SET HIGH!!");
-    digitalWrite(ledPin, HIGH);
-    // digitalWrite(0, LOW);
-    // digitalWrite(1, LOW);
-    // digitalWrite(16, LOW);
-
-    delay(10000);
-  }
-  else
-  {
-    Serial.println("!!START FLASH!!");
-    for (int x = 0; x < 4; x++)
-    {
-      digitalWrite(ledPin, LOW);
-      delay(100);
-      digitalWrite(ledPin, HIGH);
-      delay(100);
-    }
-
-    // digitalWrite(0, HIGH);
-    // digitalWrite(1, HIGH);
-    // digitalWrite(16, HIGH);
-  }
-
   if (true)
   {
-    if (false && loopCounter < 5)
+    if (loopCounter < 5)
     {
       Serial.print("loopCounter: ");
       Serial.println(loopCounter++);
@@ -297,6 +213,6 @@ void loop()
       testHttp();
     }
 
-    // delay(2000);
+    delay(5001);
   }
 }
