@@ -218,19 +218,24 @@ void loop()
     // }
 
     sensors.requestTemperatures();
-    float temperature = sensors.getTempCByIndex(0);
+    float temperatureC = sensors.getTempCByIndex(0);
     float temperatureF = sensors.getTempFByIndex(0);
 
-    Serial.print(temperatureF);
-    Serial.print("F ");
-    Serial.print(temperature);
-    Serial.println("C ");
+    printTemperature(temperatureF, "(F):", temperatureC, "(C):");
 
+    // Serial.print("F-temp:");
+    // Serial.print(temperatureF);
+    // //Serial.print("F ");
+    // Serial.print(",");
+    // Serial.print("C-temp:");
+    // Serial.print(temperature);
+    // Serial.println();
+    // Serial.println("C ");
 
     if (temperatureF < 50.0 || temperatureF > 100.0)
     {
       digitalWrite(ledPin, LED_ON);
-      Serial.print("LED_ON -> ");      
+      Serial.print("LED_ON -> ");
     }
     else
     {
@@ -238,10 +243,7 @@ void loop()
       Serial.print("LED_OFF -> ");
     }
 
-
     delay(1000); // Read temperature every 1s
-
-
 
     return;
   }
@@ -299,4 +301,14 @@ void loop()
 
     // delay(2000);
   }
+}
+
+void printTemperature(float temperatureF, String fLabel, float temperatureC, String cLabel)
+{
+  Serial.print(fLabel);          // Print the Fahrenheit label (e.g., "Outdoor Temp (F): ")
+  Serial.print(temperatureF, 1); // Print Fahrenheit with 1 decimal place
+  Serial.print(", ");
+  Serial.print(cLabel);          // Print the Celsius label (e.g., "Indoor Temp (C): ")
+  Serial.print(temperatureC, 1); // Print Celsius with 1 decimal place
+  Serial.println();              // Move to the next line
 }
